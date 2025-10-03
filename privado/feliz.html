@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Feliz 17, Elizabeth ✨</title>
+  <meta name="description" content="Una sorpresa hecha con amor para Elizabeth: fuegos artificiales, confeti, música y recuerdos.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0f1a;
+      --card:#121826;
+      --accent:#ff7ac8;
+      --accent-2:#7acbff;
+      --text:#f6f7fb;
+      --muted:#cbd1e1;
+      --gold:#ffd66e;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+    a{color:var(--accent-2);text-decoration:none}
+    header{
+      position:relative;overflow:hidden;
+      display:grid;place-items:center;text-align:center;
+      padding:6rem 1.5rem 4rem;background:linear-gradient(180deg,#0b0f1a 0%,#121826 100%);
+    }
+    .hero{
+      max-width:960px;margin:auto;
+    }
+    .title{
+      font-family:"Playfair Display",serif;font-weight:700;letter-spacing:.3px;
+      font-size:clamp(2rem,4vw,3.25rem);
+      background:linear-gradient(90deg,#fff 0%,#ffd66e 30%,#ff7ac8 60%,#7acbff 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .subtitle{margin:.5rem auto 1.25rem;max-width:700px;color:var(--muted);font-size:1rem}
+    .actions{display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;margin-top:1rem}
+    .btn{
+      border:1px solid #273043;background:#1a2132;color:var(--text);
+      padding:.75rem 1rem;border-radius:12px;cursor:pointer;font-weight:600;
+      transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;
+    }
+    .btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.35);border-color:#365079}
+    .btn.primary{background:linear-gradient(135deg,#ff7ac8,#ffd66e);color:#151515;border:none}
+    .btn.secondary{background:linear-gradient(135deg,#7acbff,#b29dff);color:#151515;border:none}
+    .canvas-wrap{position:absolute;inset:0;pointer-events:none}
+    canvas#fireworks{width:100%;height:100%}
+    main{max-width:1080px;margin:-2rem auto 3rem;padding:0 1rem}
+    .card{
+      background:linear-gradient(180deg,#111827 0%,#0f172a 100%);
+      border:1px solid #273043;border-radius:16px;padding:1.25rem;margin-bottom:1rem;
+      box-shadow:0 12px 40px rgba(0,0,0,.35);
+    }
+    .card h2{font-family:"Playfair Display",serif;font-size:1.75rem;margin:.25rem 0 1rem}
+    .message{font-size:1.05rem;line-height:1.7;color:#e7ecf8}
+    .highlight{color:var(--gold);font-weight:600}
+    .timeline{display:grid;grid-template-columns:1fr;gap:1rem}
+    @media(min-width:700px){.timeline{grid-template-columns:repeat(2,1fr)}}
+    .moment{
+      background:#0e1422;border:1px solid #243047;border-radius:14px;padding:1rem;
+    }
+    .moment h3{margin:.2rem 0 .4rem;font-size:1.1rem}
+    .moment p{color:#cbd1e1;margin:.2rem 0 .2rem}
+    .gallery{
+      display:grid;gap:.75rem;
+      grid-template-columns:repeat(2,1fr);
+    }
+    @media(min-width:800px){.gallery{grid-template-columns:repeat(4,1fr)}}
+    .gallery img{
+      width:100%;height:220px;object-fit:cover;border-radius:12px;
+      border:1px solid #273043;filter:saturate(1.1) contrast(1.05);
+      transition:transform .2s ease,box-shadow .2s ease;
+    }
+    .gallery img:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.4)}
+    .footer{
+      text-align:center;color:#a9b4cc;padding:2rem 1rem
+    }
+    .badge{
+      display:inline-flex;align-items:center;gap:.4rem;
+      background:#142033;border:1px solid #273043;color:#cfe4ff;
+      padding:.5rem .75rem;border-radius:999px;font-size:.9rem
+    }
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media (prefers-reduced-motion: reduce) {
+      .btn:hover{transform:none;box-shadow:none}
+      .gallery img:hover{transform:none;box-shadow:none}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="canvas-wrap" aria-hidden="true">
+      <canvas id="fireworks"></canvas>
+    </div>
+    <div class="hero" role="banner" aria-label="Sorpresa de cumpleaños para Elizabeth">
+      <div class="badge" aria-live="polite">✨ Feliz 17 añitos, Elizabeth— Espero que te sientas muy bienn ✨</div>
+      <h1 class="title">Te dije que te lo mandaria esta noche asi que esto lo hice especialmente para ti</h1>
+      <p class="subtitle">Aqui veras fuegos artificiales porque se que te gustan xd, tambien confeti, música y unas fotos tuyas :3 . Hecha con cariño, por y para ti. 💖</p>
+      <div class="actions">
+        <button class="btn primary" id="btnFire">Encender fuegos artificiales</button>
+        <button class="btn secondary" id="btnConfetti">Celebrar con confeti</button>
+        <button class="btn" id="btnMusic">Play / Pause música , para reproducir tu cancion favorita xdd</button>
+      </div>
+      <audio id="sonido" preload="auto">
+        <!-- REEMPLAZA: pon tu pista local, por ejemplo "audio/feliz_cumple.mp3" -->
+        <source src="sonido/Audio de WhatsApp 2025-10-02 a las 19.04.40_0cb041f2.mp3" type="audio/mpeg">
+      </audio>
+    </div>
+  </header>
+
+  <main>
+    <section class="card" aria-labelledby="msg-title">
+      <h2 id="msg-title">Un mensaje para ti</h2>
+      <p class="message">
+        Elizabeth, hoy cumples <span class="highlight">17 años 🥺</span>, y te hice esto para que veas que no me olvide de tu cumpleaños.  
+        Bueno este seria mi regalo espero te guste, aunque no te haya dado paste, mucho menos un abracito perdona mi niña.....(aun lo eres <3 ).  
+        Esta página guarda una promesa: seguir celebrando tu forma de brillar, con detalles que te conocen.  
+        Ojalá al verla sientas un poco de todo lo que me inspiras — alegría, calma y ese impulso bonito de  poder crear cosas como de este tipo xd.
+      </p>
+    </section>
+
+    <section class="card" aria-labelledby="timeline-title">
+      <h2 id="timeline-title">Nuestro pequeño timeline xD</h2>
+      <div class="timeline">
+        <article class="moment">
+          <h3>Primer encuentro. primeros momentos  </h3>
+          <p> “Un 26 de junio cuando te escribi xD, y de ahi empezamos una bonita amistaddd”</p>
+          <p class="muted">Año: 2025</p>
+        </article>
+        <article class="moment">
+          <h3>Que cancion te gusta??</h3>
+          <p>“Pues la de Voy a conquistarte”</p>
+          <p class="muted">Del autor: Joan Sebastian</p>
+        </article>
+        <article class="moment">
+          <h3>Que cosas te gustan?</h3>
+          <p>"Te gusta el chocolate blanco, te gustan los chips, tu k-drama favorito es la de mi bello demonio, autor favorito: Song Kang”</p>
+          <p class="muted">:3</p>
+        </article>
+        <article class="moment">
+          <h3>Que te gusta hacer?</h3>
+          <p>"te gusta dibujar, te  gusta bailar, te gusta cantar,  te gusta ver anime y k-drama, y ademas te gusta la pizza”</p>
+          <p class="muted">:3</p>
+    </section>
+
+    <section class="card" aria-labelledby="galeria-title">
+      <h2 id="galeria-title">Galería de  *mi* Elizabeth</h2>
+      <div class="gallery">
+        <!-- REEMPLAZA rutas y alt con sus fotos -->
+        <img src="img/IMG-20251001-WA0001.jpg" alt="Elizabeth sonriendo con luz cálida">
+        <img src="img/IMG-20251001-WA0002.jpg" alt="Elizabeth con fuegos artificiales al fondo">
+        <img src="img/IMG-20251001-WA0003.jpg" alt="Elizabeth disfrutando el momento">
+        <img src="img/IMG-20251001-WA0004.jpg" alt="Elizabeth celebrando su cumpleaños">
+        <img src="img/IMG-20251001-WA0005.jpg" alt="Primer plano de Elizabeth con mirada alegre">
+        <img src="img/IMG-20251001-WA0006.jpg" alt="Elizabeth y su risa contagiosa">
+        <img src="img/IMG-20251001-WA0007.jpg" alt="Recuerdo especial con Elizabeth">
+        <img src="img/IMG-20251001-WA0008.jpg" alt="Elizabeth con confeti alrededor">
+      </div>
+    </section>
+
+       <!-- 🎥 Video integrado -->
+    <div style="grid-column: span 2; position:relative; padding-bottom:56.25%; height:0;">
+      <video controls poster="img/inicio.jpg" style="position:absolute; top:0; left:0; width:100%; height:100%; border-radius:12px;">
+        <source src="video/Video de WhatsApp 2025-10-02 a las 18.28.31_286b8d10.mp4" type="video/mp4">
+        
+        Tu navegador no soporta video.
+      </video>
+    </div>
+
+
+    <section class="card" aria-labelledby="detalles-title">
+      <h2 id="detalles-title">Detalles que hacen magia</h2>
+      <ul>
+        <li><strong>Color:</strong> Gradientes suaves con dorado para celebrar tu brillo.</li>
+        <li><strong>Movimiento:</strong> Fuegos y confeti con botón porque se que te gustan</li>
+        <li><strong>Música:</strong> Una pista que te  gustara, para que la página tenga un sonidito alegre</li>
+      </ul>
+    </section>
+
+    <footer class="footer">
+      <p>Hecho con cariño, pensando en ti, Elizabeth. <3 💛</p>
+      <p><small>Si algo no carga, prueba recargar o abrir en otro navegador.</small></p>
+    </footer>
+  </main>
+
+  <script>
+    // Utilidades
+    const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+    const rand = (min, max) => Math.random() * (max - min) + min;
+
+    // Música
+    const audio = document.getElementById('audio');
+    const btnMusic = document.getElementById('btnMusic');
+    btnMusic.addEventListener('click', () => {
+      if(audio.paused){ audio.play().catch(()=>{}); btnMusic.textContent = '⏸️ Pausar música'; }
+      else{ audio.pause(); btnMusic.textContent = '▶️ Play música'; }
+    });
+
+    // Confeti simple
+    const btnConfetti = document.getElementById('btnConfetti');
+    btnConfetti.addEventListener('click', () => burstConfetti());
+    function burstConfetti(){
+      const count = 160;
+      const colors = ['#ffd66e','#ff7ac8','#7acbff','#b29dff','#ffffff'];
+      for(let i=0;i<count;i++){
+        const c = document.createElement('div');
+        c.style.position='fixed';
+        c.style.left = rand(0,100)+'vw';
+        c.style.top = '-2vh';
+        c.style.width = c.style.height = rand(6,10)+'px';
+        c.style.background = colors[Math.floor(rand(0,colors.length))];
+        c.style.opacity = rand(0.8,1);
+        c.style.transform = `rotate(${rand(0,360)}deg)`;
+        c.style.borderRadius = rand(0,1)>0.6 ? '50%' : '4px';
+        c.style.zIndex = 9999;
+        c.style.pointerEvents='none';
+        const dur = rand(2.5,5.5);
+        c.style.transition = `transform ${dur}s linear, top ${dur}s linear, opacity ${dur}s linear`;
+        document.body.appendChild(c);
+        requestAnimationFrame(()=>{
+          c.style.top = '110vh';
+          c.style.transform = `translateX(${rand(-40,40)}vw) rotate(${rand(360,1080)}deg)`;
+          c.style.opacity = 0.95;
+        });
+        setTimeout(()=> c.remove(), dur*1000);
+      }
+    }
+
+    // Fuegos artificiales (canvas)
+    const canvas = document.getElementById('fireworks');
+    const ctx = canvas.getContext('2d');
+    let w, h, particles=[], rockets=[], running=false;
+
+    function resize(){
+      w = canvas.width = canvas.clientWidth;
+      h = canvas.height = canvas.clientHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function Rocket(x, y, targetY, color){
+      this.x=x; this.y=y; this.vx=rand(-0.8,0.8); this.vy=rand(-9,-7);
+      this.ay=0.12; this.color=color; this.targetY=targetY; this.exploded=false;
+    }
+    function Particle(x,y,color){
+      this.x=x; this.y=y; this.life=rand(60,100);
+      this.vx=rand(-4,4); this.vy=rand(-4,4);
+      this.gravity=0.05; this.color=color;
+    }
+
+    function launch(){
+      const x = rand(w*0.2,w*0.8);
+      const y = h;
+      const targetY = rand(h*0.25,h*0.55);
+      const palette = [
+        '#ffd66e','#ff7ac8','#7acbff','#b29dff','#ffffff','#ffb3a1'
+      ];
+      rockets.push(new Rocket(x,y,targetY,palette[Math.floor(rand(0,palette.length))]));
+    }
+
+    function explode(rocket){
+      const count = Math.floor(rand(40,70));
+      for(let i=0;i<count;i++){
+        particles.push(new Particle(rocket.x, rocket.y, rocket.color));
+      }
+    }
+
+    function step(){
+      if(!running) return;
+      ctx.clearRect(0,0,w,h);
+      // Rockets
+      rockets.forEach((r)=>{
+        r.vy += r.ay; r.x += r.vx; r.y += r.vy;
+        // Trail
+        ctx.beginPath(); ctx.arc(r.x, r.y, 2.2, 0, Math.PI*2);
+        ctx.fillStyle=r.color; ctx.fill();
+        if(r.y <= r.targetY && !r.exploded){
+          r.exploded=true; explode(r);
+        }
+      });
+      rockets = rockets.filter(r=>!r.exploded);
+
+      // Particles
+      particles.forEach((p)=>{
+        p.vy += p.gravity; p.x += p.vx; p.y += p.vy; p.life--;
+        const alpha = clamp(p.life/100,0,1);
+        ctx.beginPath(); ctx.arc(p.x, p.y, 2.2, 0, Math.PI*2);
+        ctx.fillStyle = p.color + Math.floor(alpha*255).toString(16).padStart(2,'0');
+        ctx.fill();
+      });
+      particles = particles.filter(p=>p.life>0);
+
+      // Ambient stars
+      for(let i=0;i<30;i++){
+        const sx = (i*37 % w), sy = (i*53 % h);
+        ctx.fillStyle='rgba(255,255,255,0.08)';
+        ctx.fillRect(sx, sy, 2, 2);
+      }
+
+      // Random launches
+      if(Math.random()<0.12) launch();
+
+      requestAnimationFrame(step);
+    }
+
+    function startFireworks(){
+      if(running) return;
+      running=true;
+      for(let i=0;i<4;i++) launch();
+      step();
+    }
+    function stopFireworks(){
+      running=false; rockets=[]; particles=[]; ctx.clearRect(0,0,w,h);
+    }
+
+    const btnFire = document.getElementById('btnFire');
+    btnFire.addEventListener('click', ()=>{
+      if(!running){ startFireworks(); btnFire.textContent='Detener fuegos'; }
+      else{ stopFireworks(); btnFire.textContent='Encender fuegos artificiales'; }
+    });
+
+    // Auto-encender al cargar (si no prefiere reducir movimiento)
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!prefersReduced){ startFireworks(); }
+
+    // Mejoras pequeñas: encender confeti al final de la canción
+    audio.addEventListener('ended', ()=> burstConfetti());
+  </script>
+</body>
+</html>
