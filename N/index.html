@@ -268,6 +268,100 @@ section {
       color: #ffb6c1;
       animation: latido 1.2s infinite;
     }
+
+    /* RESPONSIVIDAD PARA MÓVILES */
+@media (max-width: 700px) {
+  header .contenido {
+    padding: 22px 6px;
+    border-radius: 12px;
+  }
+  h1 {
+    font-size: 2.1rem;
+    line-height: 1.15;
+  }
+  .sub, .audio-tip {
+    font-size: 1rem;
+  }
+  nav h5 {
+    font-size: 0.97rem;
+    padding: 8px 4px;
+  }
+  nav ul {
+    gap: 7px;
+  }
+  nav a {
+    font-size: 0.93rem;
+    padding: 7px 10px;
+  }
+  section {
+    padding: 32px 4vw;
+  }
+  h2 {
+    font-size: 1.3rem;
+  }
+  .tarjeta {
+    padding: 13px 5px;
+    border-radius: 10px;
+  }
+  .carrusel {
+    grid-auto-columns: 98vw;
+    gap: 7px;
+    padding-bottom: 2px;
+  }
+  .carrusel img {
+    max-height: 48vw;
+    border-radius: 8px;
+  }
+  .carta {
+    font-size: 1rem;
+    padding: 10px 2vw;
+  }
+  .firma {
+    font-size: 1.1rem;
+  }
+  .frases {
+    gap: 7px;
+  }
+  .frase {
+    padding: 8px 7px;
+    font-size: 0.98rem;
+    border-radius: 8px;
+  }
+  .timeline {
+    font-size: 0.97rem;
+    padding: 0 2vw;
+  }
+  .evento {
+    grid-template-columns: 80px 1fr;
+    gap: 7px;
+    padding-left: 7px;
+  }
+  .deseos li {
+    padding: 8px 7px;
+    border-radius: 8px;
+    font-size: 0.98rem;
+  }
+  .boton-final {
+    font-size: 0.98rem;
+    padding: 10px 16px;
+    margin-top: 16px;
+  }
+  .video video {
+    width: 98vw;
+    border-radius: 8px;
+  }
+  footer {
+    padding: 24px 4vw 40px;
+    font-size: 0.93rem;
+  }
+}
+
+/* Ajuste para pantallas muy pequeñas */
+@media (max-width: 400px) {
+  h1 { font-size: 1.3rem; }
+  h2 { font-size: 1.05rem; }
+  .carrusel img { max-height: 38vw; }
+}
   </style>
 </head>
 <body>
