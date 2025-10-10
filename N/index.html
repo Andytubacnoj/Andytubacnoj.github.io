@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Adiós, Elizabeth — mi última página</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Tipografías románticas -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Great+Vibes&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --rosa:#ff4d6d;
+      --rosa-claro:#ffb6c1;
+      --brillo:rgba(255,255,255,0.12);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Cormorant Garamond', serif;
+      background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    /* Fondos canvas */
+    #estrellas, #petalos, #amanecer, #corazones {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    }
+
+    /* Portada */
+    header {
+      min-height: 100vh;
+      display: flex; justify-content: center; align-items: center;
+      padding: 0 20px; position: relative; z-index: 1;
+    }
+    header .contenido {
+      max-width: 820px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 36px 28px;
+      backdrop-filter: blur(4px);
+      animation: fadeIn 2s ease;
+    }
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2.8rem, 6vw, 4rem);
+      margin: 0 0 8px 0;
+    }
+    .sub { font-size: 1.1rem; opacity: 0.85; margin-bottom: 18px; }
+    .escribiendo {
+      border-right: 2px solid #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 0;
+      margin: 8px auto 18px;
+      max-width: 640px;
+      animation: typing 7s steps(55, end) forwards, blink 0.9s infinite;
+      font-style: italic;
+      opacity: 0.9;
+    }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes typing { from{width:0} to{width:100%} }
+    @keyframes blink { 50%{border-color:transparent} }
+    .audio-tip { font-size: 0.95rem; opacity: 0.75; margin: 10px 0 0; }
+
+    /* Navegación */
+    nav {
+      position: sticky; top: 0; z-index: 2;
+      background: rgba(15,24,36,0.7);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    nav h5 {
+      margin: 0;
+      padding: 10px 16px;
+      font-size: 1rem;
+      opacity: 0.9;
+      text-align: center;
+    }
+    nav ul {
+      display: flex; gap: 16px; list-style: none;
+      margin: 0; padding: 0; justify-content: center; flex-wrap: wrap;
+    }
+    nav a {
+      color: #fff; text-decoration: none; padding: 8px 14px; border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12); font-size: 0.95rem;
+      transition: background 0.3s;
+    }
+    nav a:hover { background: rgba(255,255,255,0.15); }
+
+    /* Secciones con fade-in */
+    section { position: relative; z-index: 1; padding: 56px 20px; opacity: 0; transform: translateY(40px); transition: all 0.9s ease; }
+    section.visible { opacity: 1; transform: translateY(0); }
+    h2 {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(2rem, 4.6vw, 2.6rem);
+      margin: 0 0 16px 0;
+    }
+    .tarjeta {
+      max-width: 980px; margin: 0 auto;
+      background: var(--brillo);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px; padding: 26px 20px;
+    }
+
+    /* Galería carrusel */
+    .carrusel {
+      display: grid; grid-auto-flow: column; grid-auto-columns: 78%;
+      gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px;
+    }
+    .carrusel img {
+      width: 100%;
+      max-height: 55vw; /* Altura máxima relativa al ancho de pantalla */
+      height: auto;
+      object-fit: contain; /* Muestra la imagen completa */
+      background: #222; /* Fondo para imágenes horizontales */
+      border-radius: 14px;
+      scroll-snap-align: center;
+      border: 1px solid rgba(255,255,255,0.14);
+      transition: transform .5s;
+      display: block;
+      margin: 0 auto;
+    }
+    .mini { font-size: 0.92rem; opacity: 0.75; margin-top: 8px; }
+
+    /* Carta */
+    .carta { max-width: 780px; margin: 22px auto 0; text-align: left; line-height: 1.75; font-size: 1.12rem; }
+    .firma { margin-top: 18px; font-family: 'Great Vibes', cursive; font-size: 1.6rem; color: var(--rosa-claro); }
+
+    /* Promesa */
+    .espera p {
+      line-height: 1.7; font-size: 1.1rem; font-style: italic; opacity: 0.9;
+      animation: glow 3s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 5px var(--rosa-claro); }
+      to { text-shadow: 0 0 14px var(--rosa); }
+    }
+
+    /* Frases */
+    .frases { display: grid; gap: 12px; max-width: 860px; margin: 0 auto; }
+    .frase {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px; padding: 14px 16px; font-style: italic; opacity: 0.92;
+      transition: transform 0.4s, box-shadow 0.4s;
+    }
+    .frase:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(0,0,0,0.25); }
+
+    /* Animación de títulos */
+h2 {
+  position: relative;
+  display: inline-block;
+}
+h2::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -6px;
+  width: 0; height: 3px;
+  background: var(--rosa-claro);
+  animation: underline 2s forwards;
+}
+@keyframes underline {
+  to { width: 100%; }
+}
+
+/* Cursor personalizado */
+body {
+  cursor: url('petalo.png'), auto; /* Usa un PNG pequeño de pétalo */
+}
+
+/* Parallax en estrellas */
+#estrellas {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Aparición con zoom */
+section.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+section {
+  transform: translateY(40px) scale(0.98);
+}
+
+/* Frases flotantes al final */
+.frase-flotante {
+  position: absolute;
+  opacity: 0;
+  animation: flotar 6s ease forwards;
+}
+@keyframes flotar {
+  0% { opacity: 0; transform: translateY(20px); }
+  50% { opacity: 1; transform: translateY(-20px); }
+  100% { opacity: 0; transform: translateY(-60px); }
+}
+
+    /* Timeline */
+    .timeline { max-width: 760px; margin: 0 auto; text-align: left; }
+    .evento { display: grid; grid-template-columns: 130px 1fr; gap: 14px; align-items: start; padding: 12px 0; border-left: 3px solid var(--rosa-claro); padding-left: 14px; }
+    .fecha { font-weight: 600; color: var(--rosa-claro); }
+
+    /* Deseos */
+    .deseos ul { list-style: none; padding: 0; display: grid; gap: 10px; }
+    .deseos li {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px; padding: 12px 14px; font-style: italic;
+    }
+
+    /* Botón simbólico */
+    .boton-final {
+      display: inline-block; margin: 24px auto 0; padding: 14px 24px;
+      background: var(--rosa); color: #fff; border-radius: 999px;
+      font-size: 1.06rem; text-decoration: none; border: none; cursor: pointer;
+      animation: latido 1.6s infinite;
+    }
+    @keyframes latido { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+
+    /* Video */
+    .video video {
+      width: min(900px, 92vw); border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.14); background: rgba(0,0,0,0.2);
+    }
+
+    /* Pie */
+    footer { position: relative; z-index: 1; padding: 40px 16px 60px; opacity: 0.78; }
+    .nota { font-size: 0.96rem; }
+
+    /* Amanecer overlay */
+    #amanecer { mix-blend-mode: screen; opacity: 0; transition: opacity 2.4s ease; }
+    .fin-luminoso #amanecer { opacity: 1; }
+
+    /* Efecto de brillo animado en el nombre */
+    .brillo-nombre {
+      display: inline-block;
+      background: linear-gradient(90deg, #fff 20%, #ffb6c1 40%, #ff4d6d 60%, #fff 80%);
+      background-size: 200% auto;
+      color: #fff;
+      padding: 0 8px;
+      border-radius: 8px;
+      box-shadow: 0 0 18px 2px #ffb6c1, 0 0 32px 4px #ff4d6d;
+      animation: brilloElizabeth 2.5s linear infinite;
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.2em;
+      letter-spacing: 1px;
+    }
+    @keyframes brilloElizabeth {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    /* Corazones flotantes */
+    #corazones {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    /* Mensaje final animado */
+    .mensaje-quedate {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 1.1em;
+      color: #ffb6c1;
+      animation: latido 1.2s infinite;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fondos -->
+  <canvas id="estrellas"></canvas>
+  <canvas id="petalos"></canvas>
+  <canvas id="amanecer"></canvas>
+  <canvas id="corazones"></canvas>
+
+  <!-- Portada -->
+  <header id="inicio">
+    <div class="contenido">
+      <h1>
+        Ultimamente he notado que ya no quieres hablarme asi que me tome el tiempo a hacer esto para ti.
+        <span class="brillo-nombre">Elizabeth</span> 🌹
+      </h1>
+      <p class="sub">Mi última página. No sé si la leerás, pero necesitaba dejarla aquí, como una carta en una botella xd. Si ya no quieres hablarme te entiendo perfectamente <3</p>
+      <p class="escribiendo">“Si ya no quieres hablarme, lo entiendo te lastime mucho lloraste al igual que yo perdon.. Si encontraste a alguien más pues esa felicidad de saber que ya no estaras sola me hace sentir bien. Porque lo único que siempre quise fue verte feliz en esta vida eliz. ”</p>
+      <p class="audio-tip">Si la música no inicia, presiona play en tu navegador o en cualquier parte xd</p>
+    </div>    <!-- ...existing code... -->
+    <audio id="musica" autoplay loop muted>
+      <source src="audio/Sebastián Yatra - No Hay Nadie Más (Official Video).mp3" type="audio/mpeg">
+    </audio>
+    <!-- ...existing code... -->
+    
+    <script>
+    // ...existing code...
+    
+    // Permitir autoplay en la mayoría de navegadores
+    window.addEventListener('DOMContentLoaded', () => {
+      const audio = document.getElementById('musica');
+      // Intenta reproducirlo silenciado
+      audio.muted = true;
+      audio.play().then(() => {
+        // Si se reproduce, desmutea después de un clic
+        const activarSonido = () => {
+          audio.muted = false;
+          audio.volume = 0.7;
+          window.removeEventListener('click', activarSonido);
+          window.removeEventListener('touchstart', activarSonido);
+        };
+        window.addEventListener('click', activarSonido);
+        window.addEventListener('touchstart', activarSonido);
+      }).catch(() => {
+        // Si falla, espera interacción
+        const iniciarAudio = () => {
+          audio.muted = false;
+          audio.play();
+          window.removeEventListener('click', iniciarAudio);
+          window.removeEventListener('touchstart', iniciarAudio);
+        };
+        window.addEventListener('click', iniciarAudio);
+        window.addEventListener('touchstart', iniciarAudio);
+      });
+    });
+    
+    // ...existing code...
+    </script>
+  </header>
+
+  <!-- Navegación -->
+  <nav>
+    <h5>Por si gustas puedes presionar en esta sección los momentos, carta, promesa, etc. para que te lleve de una vez.</h5>
+    <ul>
+      <li><a href="#momentos">Momentos</a></li>
+      <li><a href="#carta">Carta</a></li>
+      <li><a href="#espera">Promesa</a></li>
+      <li><a href="#frases">Susurros</a></li>
+      <li><a href="#video">Video</a></li>
+      <li><a href="#historia">Nuestra historia</a></li>
+      <li><a href="#deseos">Lo que deseo para ti</a></li>
+      <li><a href="#final">Final</a></li>
+    </ul>
+  </nav>
+
+  <!-- Galería -->
+  <section id="momentos">
+    <h2>Nuestros momentos en el juego xdddd</h2>
+    <div class="tarjeta">
+      <div class="carrusel">
+        <img src="img/IMG-20251001-WA0001.jpg" alt="Recuerdo 1">
+        <img src="img/corazon.png" alt="Recuerdo 2">
+        <img src="img/image.png" alt="Recuerdo 3">
+        <img src="img/nosotros.png" alt="Recuerdo 4">
+        <img src="img/jajaja.png" alt="Recuerdo 5">
+        
+      </div>
+      <p class="mini">Como olvidar cuando hibamos a engañar cuates para consegui el pase xD</p>
+    </div>
+  </section>
+
+  <!-- Carta -->
+  <section id="carta">
+    <h2>Mi carta para ti</h2>
+    <div class="tarjeta carta">
+      <p>
+        Elizabeth, aunque la distancia y por estas cosas que nos separaron, quiero que sepas que fuiste valiosa en mi vida.
+        Hoy, que cumplimos dos meses me duele decirlo aunque sigues siendo alguien importante en mi vida, dejo aquí este adiós definitivo, porque me e dado cuenta que ya no quieres hablar conmigo xd, a menos que tú quieras que me quede te comprendere y seguire contigo, claro si te lastimo que te siga escribiendo mejor lo dejo de hacer con tal de verte feliz eliz :3 .
+        Gracias por cada instante, por cada palabra y por cada emoción se que no pude conocerte en persona,
+        pero te sentí más cerca que a cualquiera. Si este
+       es el final, que sea un final hermoso, por eso me tome el tiempo a decirte y crearte esto.
+       Gracias
+
+" por ser mi pequeño universo a distancia.
+      </p>
+      <p class="mini">espero y no te moleste que haya puesto esto aqui, solo quiero que sepas que siempre estare para ti :3</p>
+      <p>
+
+Te conocí en un momento inesperado, sin embargo, te ganaste mi cariño, mi confianza, mi lealtad. En el fondo de tu corazón, sabes que siempre te traté con honestidad.
+
+Te amé de la forma más inocente, te amé tanto que, incluso sabiendo que me ibas a lastimar, me quedé. Pero Dios sabe por qué pasan las cosas; fuiste mi prioridad.
+
+Fuiste y serás mi tatuaje sin tinta, que llevaré marcado de por vida.
+
+A veces necesito desconectar para conectar conmigo mismo.
+
+Espero que encuentres a alguien a quien realmente quieras, porque yo nunca lo fui.
+
+Sé que en algún momento de nuestras vidas nos volveremos a encontrar, pero ya no para amarnos como cuando nos conocimos; conectamos al instante, pero nunca supe que dolería tanto.
+
+A veces hay que soltar para poder sanar.
+
+Con estas palabras, me despido.
+
+Recuerda que siempre te quise de una forma que nadie más te querrá.
+
+Te deseo lo mejor. Espero que cumplas todo lo que un día me contaste: tus sueños, tus metas, tus propósitos.
+
+Me despido de ti, aún amándote, pero el tiempo lo cura todo.
+
+Y el tiempo de Dios es perfecto.
+
+No sé si llegarás a leer esto, pero recuerda que siempre estuve para ti.
+
+Me duele saber que nunca más podré sentir tu presencia, que nunca más podré escuchar tu voz,
+
+que nunca más podré decirte cuánto te amo.
+
+Me quedo con los recuerdos, con las lágrimas y con el dolor.
+
+Me quedo con la certeza de que siempre te amaré, aunque ya no estés aquí conmigo. Y aunque el tiempo pase, aunque la vida siga adelante, mi corazón siempre estará contigo...
+      </p>
+      <p class="firma">Con cariño, Andy</p>
+    </div>
+  </section>
+
+  <!-- Promesa de espera -->
+  <section id="espera">
+    <h2>La promesa de tu espera</h2>
+    <div class="tarjeta espera">
+      <p>
+        Me dijiste que me esperarías, y en ese instante lo creí con todo mi corazón.
+        Hoy, aunque el silencio me envuelve, no guardo rencor: solo gratitud por aquella promesa que me dio fuerza.
+        Si ya no estás, que sea porque encontraste tu alegría.
+        Y si alguna vez vuelves, aquí quedará este recuerdo, intacto.
+        Yo crei que enserio me esperarias pero veo que no es asi xd, espero y encuentres a esa persona que te haga feliz <3
+
+      </p>
+    </div>
+  </section>
+
+  <!-- Susurros -->
+  <section id="frases">
+    <h2>mira</h2>
+    <div class="tarjeta frases">
+      <div class="frase">“Nunca te vi en persona, pero te sentí más cerca que a nadie.”</div>
+      <div class="frase">“Cada mensaje tuyo fue un latido nuevo en mi vida.”</div>
+      <div class="frase">“Aprendí que amar también es dejar ir con dulzura.”</div>
+      <div class="frase">“Si te veo sonreír, aunque sea con alguien más, yo también sonrío.”</div>
+      <div class="frase">“Gracias por ser mi pequeño universo a distancia, fuiste una buena chica para mi.”</div>
+
+    </div>
+  </section>
+
+  <!-- Video -->
+  <section id="video">
+    <h2>Un recuerdo en video</h2>
+    <div class="tarjeta video">
+      <video controls poster="poster-video.jpg">
+        <source src="video/WhatsApp Video 2025-10-09 at 7.29.00 PM.mp4" type="video/mp4">
+        Tu navegador no soporta video.
+      </video>
+      <p class="mini">ahora ya sabes de donde saco las frases y poemas que te decia <3 </p>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section id="historia">
+    <h2>Nuestra historia</h2>
+    <div class="tarjeta timeline">
+      <div class="evento">
+        <div class="fecha">10 Ago 2025</div>
+        <div>El día que nos conocimos en línea ✨</div>
+      </div>
+      <div class="evento">
+        <div class="fecha">09 Sep 2025</div>
+        <div>La primera vez que hablamos toda la noche 🌙</div>
+      </div>
+      <div class="evento">
+        <div class="fecha">09 Oct 2025</div>
+        <div>Nuestros dos meses de novios 💕</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deseos -->
+  <section id="deseos">
+    <h2>Lo que deseo para ti</h2>
+    <div class="tarjeta deseos">
+      <ul>
+        <li>Que cada mañana te despierte una sonrisa.</li>
+        <li>Que encuentres a alguien que te abrace como yo te soñé.</li>
+        <li>Que nunca olvides lo valiosa que eres.</li>
+        <li>Que la vida te regale alegría, aunque yo ya no esté.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Final con botón simbólico -->
+  <section id="final">
+    <h2>Un último mensaje, o bueno si quieres que este contigo ps lo hare como te digo te noto distante y eso.</h2>
+    <div class="tarjeta">
+      <p>Si aún quieres que no me vaya, házmelo saber. Si prefieres que deje de molestarte a cada rato por lo que hago, lo hare.</p>
+      <button class="boton-final" id="sonrie">Presiona esto y velo que hermosa es como tu <3 </button>
+      <p id="mensaje-oculto" class="mini" style="display:none; margin-top:12px;">
+        Eso es todo lo que siempre quise. 🌅<br>
+        <span class="mensaje-quedate" style="display:none;">Si decides quedarte, prometo seguir haciéndote sonreír cada día. 💖 aunque  sea almenos  tu amigo <3 siempre tendras mi ayuda eliz , perdoname por todo el dolo que te e causado :C </span>
+      </p>
+    </div>
+  </section>
+  <div id="frases-flotantes"></div>
+
+<script>
+  const frases = [
+    "Siempre fuiste valiosa 🌹",
+    "Gracias por cada instante ✨",
+    "Si sonríes, yo sonrío 🌅"
+  ];
+  const contenedor = document.getElementById('frases-flotantes');
+  document.getElementById('sonrie').addEventListener('click', () => {
+    frases.forEach((texto, i) => {
+      const span = document.createElement('span');
+      span.textContent = texto;
+      span.className = 'frase-flotante';
+      span.style.left = (20 + i*30) + '%';
+      span.style.top = '50%';
+      span.style.animationDelay = (i*2) + 's';
+      contenedor.appendChild(span);
+    });
+  });
+</script>
+
+  <!-- Pie -->
+  <footer>
+    <p class="nota">Hecho con el corazón por Andy xd :c </p>
+  </footer>
+
+  <!-- Scripts de efectos -->
+  <script>
+    // Estrellas parpadeando
+    const estrellas = document.getElementById('estrellas');
+    const ctxE = estrellas.getContext('2d');
+    function resizeE(){ estrellas.width=innerWidth; estrellas.height=innerHeight; }
+    resizeE();
+    const puntos = Array.from({length: 120}, () => ({
+      x: Math.random()*innerWidth,
+      y: Math.random()*innerHeight,
+      r: Math.random()*1.6+0.4,
+      t: Math.random()*Math.PI*2
+    }));
+    function dibujarEstrellas(){
+      ctxE.clearRect(0,0,estrellas.width,estrellas.height);
+      for(const p of puntos){
+        p.t += 0.035;
+        const alpha = 0.45 + Math.sin(p.t)*0.35;
+        ctxE.fillStyle = `rgba(255,255,255,${alpha})`;
+        ctxE.beginPath(); ctxE.arc(p.x,p.y,p.r,0,Math.PI*2); ctxE.fill();
+      }
+      requestAnimationFrame(dibujarEstrellas);
+    }
+    dibujarEstrellas();
+
+    // Pétalos cayendo
+    const petalos = document.getElementById('petalos');
+    const ctxP = petalos.getContext('2d');
+    function resizeP(){ petalos.width=innerWidth; petalos.height=innerHeight; }
+    resizeP();
+    const flakes = Array.from({length: 40}, () => ({
+      x: Math.random()*innerWidth,
+      y: Math.random()*innerHeight,
+      r: Math.random()*6+2,
+      d: Math.random()*0.8+0.6,
+      w: Math.random()*0.9+0.3
+    }));
+    function dibujarPetalos(){
+      ctxP.clearRect(0,0,petalos.width,petalos.height);
+      for(const p of flakes){
+        ctxP.fillStyle = "rgba(255,182,193,0.85)";
+        ctxP.beginPath(); ctxP.ellipse(p.x,p.y,p.r,p.r*0.7, p.w, 0, Math.PI*2); ctxP.fill();
+        p.y += p.d; p.x += Math.sin(p.y*0.01)*0.4;
+        if(p.y>petalos.height){ p.y = -10; p.x = Math.random()*petalos.width; }
+      }
+      requestAnimationFrame(dibujarPetalos);
+    }
+    dibujarPetalos();
+
+    // Amanecer (cierre luminoso)
+    const amanecer = document.getElementById('amanecer');
+    const ctxA = amanecer.getContext('2d');
+    function resizeA(){ amanecer.width=innerWidth; amanecer.height=innerHeight; }
+    resizeA();
+    function pintarAmanecer(){
+      const g = ctxA.createRadialGradient(innerWidth/2, innerHeight*0.85, 10, innerWidth/2, innerHeight*0.85, innerHeight*0.9);
+      g.addColorStop(0, "rgba(255,210,150,0.85)");
+      g.addColorStop(0.25, "rgba(255,170,120,0.55)");
+      g.addColorStop(0.55, "rgba(255,120,120,0.35)");
+      g.addColorStop(1, "rgba(255,120,120,0.0)");
+      ctxA.fillStyle = g; ctxA.fillRect(0,0,amanecer.width, amanecer.height);
+    }
+    pintarAmanecer();
+
+    // Corazones flotantes
+    const corazones = document.getElementById('corazones');
+    const ctxC = corazones.getContext('2d');
+    function resizeC(){ corazones.width=innerWidth; corazones.height=innerHeight; }
+    resizeC();
+    const hearts = Array.from({length: 22}, () => ({
+      x: Math.random()*innerWidth,
+      y: Math.random()*innerHeight,
+      size: Math.random()*22+12,
+      speed: Math.random()*0.7+0.3,
+      alpha: Math.random()*0.5+0.4,
+      dx: Math.random()*1.2-0.6
+    }));
+    function drawHeart(ctx, x, y, size, alpha) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(size/32, size/32);
+      ctx.globalAlpha = alpha;
+      ctx.beginPath();
+      ctx.moveTo(16, 29);
+      ctx.bezierCurveTo(2, 18, 2, 6, 16, 6);
+      ctx.bezierCurveTo(30, 6, 30, 18, 16, 29);
+      ctx.closePath();
+      ctx.fillStyle = "#ff4d6d";
+      ctx.shadowColor = "#ffb6c1";
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.restore();
+    }
+    function animarCorazones(){
+      ctxC.clearRect(0,0,corazones.width,corazones.height);
+      for(const h of hearts){
+        drawHeart(ctxC, h.x, h.y, h.size, h.alpha);
+        h.y -= h.speed;
+        h.x += h.dx;
+        if(h.y < -40){
+          h.y = corazones.height + 20;
+          h.x = Math.random()*corazones.width;
+        }
+        if(h.x < -40 || h.x > corazones.width+40){
+          h.x = Math.random()*corazones.width;
+        }
+      }
+      requestAnimationFrame(animarCorazones);
+    }
+    animarCorazones();
+
+    // Botón simbólico: muestra mensaje y activa amanecer
+    const btn = document.getElementById('sonrie');
+    const msg = document.getElementById('mensaje-oculto');
+    let mostrado = false;
+    btn.addEventListener('click', () => {
+      msg.style.display = 'block';
+      document.body.classList.add('fin-luminoso');
+      if (!mostrado) {
+        mostrado = true;
+      } else {
+        msg.querySelector('.mensaje-quedate').style.display = 'inline-block';
+      }
+    });
+
+    // Fade-in de secciones al hacer scroll (Intersection Observer)
+    const secciones = document.querySelectorAll('section');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    secciones.forEach(s => obs.observe(s));
+
+    // Reajuste al redimensionar
+    addEventListener('resize', () => { resizeE(); resizeP(); resizeA(); pintarAmanecer(); resizeC(); });
+  </script>
+</body>
+</html>
