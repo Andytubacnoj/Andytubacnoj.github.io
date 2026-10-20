@@ -1,0 +1,534 @@
+
+const people = [
+    {
+        id: 'brayan',
+        name: 'Brayan',
+        codeHash: '080bf176a72d105681656ff5e16783e6a60c1fe531a4f3b2e1e7010781534424',
+        printCode: '482731',
+        role: 'Gracias por las risas y la buena onda choc aunque hubo momentos complicados y en las que de verdad te iba a madrear pero me aguante xd',
+        symbol: '✦',
+        accent: '#c7a8ff',
+        preview: 'Tu mensaje personal está esperando que esperas????.',
+        message: 'Brayan, Has sido una buena amistad para mi, talvez al principio no me caias bien pero solamente no me habia adaptado al nuevo ambiente que ustedes me dieron, las pláticas y por la chingadera de tantos días de clase. Parece que fue ayer cuando empezamos y ya estamos pensando en la graduación. Siendo sincero, fuiste buena amistad y nunca cambies tu manera de hacer reir a las personas choc gracias, pero me quedo con un montón de buenos recuerdos. ¡Nos vemos pronto, pishe choc ANIMOS!'
+    },
+    {
+        id: 'jorge',
+        name: 'Jorge',
+        codeHash: '46005296da6e06a7cabad40d2f5bd8759acc092ec6b85c6f67ef398ac1c0e959',
+        printCode: '691408',
+        role: 'Qué bueno coincidir en este camino, gracias por tu buena onda y por los momentos que vivimos en estos tres años.',
+        symbol: '◈',
+        accent: '#ffbe9f',
+        preview: 'Tu mensaje personal está esperando sheet.',
+        message: 'Jorge, Desde que entre al salon sabia que no me iba a llevar bien con vos y hasta el dia de hoy me seguis caendo de la verga, pero no olvidar que en algunos momentos vos me apoyabas y agradezco tu sinceridad y amistad. Gracias por ser buena y mala onda y por los momentos que vivimos en estos tres años; seguro que varios nos van a seguir dando risa cuando los recordemos. Ahora cada quien tendrá sus cosas, pero ojalá no perdamos el contacto. de cada una claro, ¡nos vemos en la focking graduación AHI TE ESPERO COMPADRE!'
+    },
+    {
+        id: 'kevin',
+        name: 'Kevin',
+        codeHash: '2fa75c93db2e31bfc5ccd721504eadd33efe62494c47ba00bc3b4d580399f92e',
+        printCode: '275936',
+        role: 'Un amigo que me llevo al vicio intenso 2',
+        symbol: '✧',
+        accent: '#9fe1d2',
+        preview: 'Tu FOCKING mensaje personal está esperando.',
+        message: 'Kevin, Vos fuiste una de las personas que me ayudo a entender mejor las materias, siempre hubo chingadera y me alegro de eso pero si te vuelvo a ver te voy a taleguear por gey xd, pajas buena onda por tus conocimientos y apoyo que me diste, perdona si algun momento te dije algo malo pero eso era la idea va vos xD, gracias por compartir conmigo las clases, trabajos y tantos momentos que hicieron special esta etapa. Después de vernos casi todos los días, se va a sentir raro no tener esa rutina de lod DMZ XD, la verdad. Pero me alegra saber que nos queda la graduación y todo lo bueno que viene. Te deseo lo mejor, ¡y no te desaparezcas!'
+    },
+    {
+        id: 'mishel',
+        name: 'Mishel',
+        codeHash: '3c696425b00870ed955d55a95a580d5968b600c7f9d4bc416b289db1abf7ed33',
+        printCode: '830517',
+        role: 'Con mucho cariño',
+        symbol: '♡',
+        accent: '#f0a8c5',
+        preview: 'La amiga que sin duda alguna fue muy amable para cada situacion que se nos presento.',
+        message: 'Mishel, gracias por Su alegría, Su cariño y por tantos momentos bonitos, Me da nostalgia pensar que ya no nos veremos de lunes a viernes como antes, pero me alegra muchísimo haber tenido compañeras como usted. Espero que le vaya increíble en todo lo que se proponga ya que usted a demostrado que es capaz de todo. ¡nos vemos pronto, hasta la graduacion y gracias por habernos invitado este dia a su casa muchisimas gracias por su generosidad Mishel, nos vemos hasta la graduacion!'
+    },
+    {
+        id: 'yadira',
+        name: 'Yadira',
+        codeHash: '57457a4a18fc3afecda8f5d1fc44d59682813fa0c608dccc9c3c2b4e6c9cbce3',
+        printCode: '154269',
+        role: 'Gracias por su ayuda y amabilidad al momento de trabajar mas en el curso de seminario y por su forma de ser, ya que sin usted no se que hubiesemos hecho la verdad.',
+        symbol: '❋',
+        accent: '#f2d18b',
+        preview: 'Su mensaje personal está esperando.',
+        message: 'Yadira, quería decirle gracias por su forma de ser y por cada momento que compartimos en estos años. Qué bonita etapa nos tocó vivir, con días buenos, días complicados y muchas cosas que recordar. Ahora toca seguir cada quien con sus planes, pero espero que sigamos en contacto, Talvez no platique mucho con usted pero para mi fue una buena compañera en estos 3 años y este año que trabajamos en electronica usted fue una buena compañera para mi, nos vemos en la graduación exitos yadira!'
+    }
+];
+
+const videoGrid = document.querySelector('#videoGrid');
+
+// La ruta debe coincidir exactamente con el nombre dentro de assets/.
+const videoMoments = [
+    { title: 'Al final si les grabe xD', file: 'video-01.mp4' },
+    { title: 'Risas entre clases, y insultos que hijos de ❤️', file: 'video-02.mp4' },
+    { title: 'Como olvidar este momento del profe Sahur xD', file: 'video-03.mp4' }
+];
+
+function renderVideos() {
+    if (!videoGrid) return;
+
+    videoGrid.innerHTML = videoMoments.map(({ title, file }, index) => {
+        const videoPath = `assets/${file}`;
+
+        return `
+            <article class="video-card" style="--video-delay: ${index * 90}ms">
+                <div class="video-wrap">
+                    <video controls playsinline preload="metadata"
+                        src="${videoPath}"
+                        aria-label="Video: ${title}"></video>
+
+                    <div class="video-placeholder">
+                        <span class="play-mark" aria-hidden="true">▶</span>
+                        <strong>${title}</strong>
+                        <small>Agrega ${videoPath}</small>
+                    </div>
+                </div>
+
+                <p><span>0${index + 1}</span> ${title}</p>
+            </article>
+        `;
+    }).join('');
+
+    videoGrid.querySelectorAll('video').forEach((video) => {
+        const placeholder = video.nextElementSibling;
+
+        video.addEventListener('loadeddata', () => {
+            placeholder.classList.add('is-hidden');
+        }, { once: true });
+
+        video.addEventListener('error', () => {
+            placeholder.querySelector('small').textContent =
+                `No se pudo cargar ${video.currentSrc || video.src}. Revisa el nombre y el formato MP4.`;
+            placeholder.classList.remove('is-hidden');
+        });
+
+        video.load();
+    });
+}
+
+const grid = document.querySelector('#messageGrid');
+const qrNotice = document.querySelector('#qrNotice');
+const toast = document.querySelector('#toast');
+
+let toastTimer;
+
+function escapeHtml(value) {
+    return value.replace(/[&<>"']/g, (character) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    })[character]);
+}
+
+function getMessageUrl(id) {
+    const url = new URL(window.location.href);
+    url.hash = `mensaje-${id}`;
+    return url.href;
+}
+
+function showToast(message) {
+    if (!toast) return;
+
+    toast.textContent = message;
+    toast.classList.add('visible');
+
+    window.clearTimeout(toastTimer);
+
+    toastTimer = window.setTimeout(() => {
+        toast.classList.remove('visible');
+    }, 2800);
+}
+
+function renderPeople() {
+    if (!grid) return;
+
+    grid.innerHTML = people.map((person, index) => `
+        <article class="message-card"
+            style="--accent: ${person.accent}"
+            id="mensaje-${person.id}">
+
+            <div class="message-top">
+                <span class="message-index">RECUERDO · 0${index + 1}</span>
+                <span class="message-symbol" aria-hidden="true">${person.symbol}</span>
+            </div>
+
+            <h3>${escapeHtml(person.name)}</h3>
+
+            <span class="role">${escapeHtml(person.role)}</span>
+
+            <p class="message-preview">
+                “${escapeHtml(person.preview)}”
+            </p>
+
+            <form class="access-form" data-access="${person.id}" hidden>
+                <label for="codigo-${person.id}">
+                    Escribe tu código personal
+                </label>
+
+                <div class="access-controls">
+                    <input
+                        id="codigo-${person.id}"
+                        name="code"
+                        type="password"
+                        inputmode="numeric"
+                        autocomplete="one-time-code"
+                        maxlength="6"
+                        pattern="[0-9]{6}"
+                        placeholder="6 dígitos"
+                        aria-label="Código personal de ${escapeHtml(person.name)}"
+                        required
+                    >
+
+                    <button class="message-link" type="submit">
+                        Abrir mensaje <span aria-hidden="true">↗</span>
+                    </button>
+                </div>
+
+                <span class="access-error" role="alert" aria-live="polite"></span>
+            </form>
+
+            <button
+                class="message-link locked-toggle"
+                type="button"
+                data-person="${person.id}"
+                aria-label="Mostrar acceso al mensaje de ${escapeHtml(person.name)}">
+                Ingresar código <span aria-hidden="true">↗</span>
+            </button>
+        </article>
+    `).join('');
+}
+
+function revealMessage(person, card) {
+    card.querySelector('.access-form').hidden = true;
+    card.querySelector('.locked-toggle').hidden = true;
+    card.querySelector('.message-preview').hidden = true;
+
+    let detail = card.querySelector('.message-full');
+
+    if (detail) return;
+
+    detail = document.createElement('p');
+    detail.className = 'message-full';
+
+    detail.style.cssText = `
+        color: #d5d1de;
+        font-size: 12px;
+        line-height: 1.8;
+        border-top: 1px solid rgba(255,255,255,.12);
+        padding-top: 14px;
+        margin: 0 0 15px;
+    `;
+
+    detail.textContent = person.message;
+    card.appendChild(detail);
+}
+
+if (grid) {
+    grid.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-person]');
+
+        if (!button) return;
+
+        const card = button.closest('.message-card');
+        const form = card.querySelector('.access-form');
+
+        form.hidden = !form.hidden;
+
+        if (!form.hidden) {
+            form.querySelector('input').focus();
+        }
+
+        if (window.location.hash !== `#mensaje-${button.dataset.person}`) {
+            history.replaceState(
+                null,
+                '',
+                getMessageUrl(button.dataset.person)
+            );
+        }
+    });
+
+    // CORRECCIÓN PRINCIPAL: el listener debe ser async
+    // porque espera el cálculo del hash SHA-256.
+    grid.addEventListener('submit', async (event) => {
+        const form = event.target.closest('.access-form');
+
+        if (!form) return;
+
+        event.preventDefault();
+
+        const person = people.find(
+            (item) => item.id === form.dataset.access
+        );
+
+        const card = form.closest('.message-card');
+        const input = form.querySelector('input');
+        const error = form.querySelector('.access-error');
+
+        if (!window.crypto?.subtle) {
+            error.textContent =
+                'Abre la página publicada con su enlace HTTPS para validar tu código.';
+            return;
+        }
+
+        try {
+            const codeDigest = await window.crypto.subtle.digest(
+                'SHA-256',
+                new TextEncoder().encode(input.value)
+            );
+
+            const enteredCodeHash = [...new Uint8Array(codeDigest)]
+                .map((byte) => byte.toString(16).padStart(2, '0'))
+                .join('');
+
+            if (!person || enteredCodeHash !== person.codeHash) {
+                error.textContent =
+                    'Ese código no coincide. Revisa el que te entregaron e inténtalo otra vez.';
+
+                input.select();
+                return;
+            }
+
+            error.textContent = '';
+            revealMessage(person, card);
+        } catch (error) {
+            console.error('Error al validar el código:', error);
+
+            error.textContent =
+                'No se pudo validar el código. Recarga la página e inténtalo de nuevo.';
+        }
+    });
+}
+
+function showTargetMessage() {
+    const id = window.location.hash.replace('#mensaje-', '');
+    const person = people.find((item) => item.id === id);
+    const card = document.getElementById(`mensaje-${id}`);
+
+    if (!person || !card) return;
+
+    card.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+    });
+
+    const form = card.querySelector('.access-form');
+
+    if (form && !card.querySelector('.message-full')) {
+        form.hidden = false;
+
+        window.setTimeout(() => {
+            form.querySelector('input').focus({
+                preventScroll: true
+            });
+        }, 350);
+    }
+}
+
+function printCards() {
+    if (!grid || !qrNotice) return;
+
+    const local =
+        window.location.protocol === 'file:' ||
+        ['localhost', '127.0.0.1'].includes(window.location.hostname);
+
+    if (local) {
+        qrNotice.hidden = false;
+
+        showToast(
+            'Publica la página en HTTPS antes de imprimir las tarjetas y sus códigos personales.'
+        );
+
+        qrNotice.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
+
+        return;
+    }
+
+    // Evita duplicar los códigos QR si se imprime más de una vez.
+    grid.querySelectorAll('.qr-code, .print-pin').forEach((element) => {
+        element.remove();
+    });
+
+    const cards = [...grid.querySelectorAll('.message-card')];
+
+    cards.forEach((card, index) => {
+        const person = people[index];
+
+        const image = document.createElement('img');
+        image.className = 'qr-code';
+        image.alt = `Código QR para el mensaje de ${person.name}`;
+
+        image.src =
+            `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(getMessageUrl(person.id))}`;
+
+        card.appendChild(image);
+
+        const pin = document.createElement('p');
+        pin.className = 'print-pin';
+        pin.textContent = `Tu código personal: ${person.printCode}`;
+
+        card.appendChild(pin);
+    });
+
+    qrNotice.hidden = false;
+
+    qrNotice.textContent =
+        'Al imprimir desde esta página compartida aparecerán los códigos de las cinco tarjetas. Recorta cada una y entrega únicamente su PIN al destinatario correspondiente.';
+
+    const qrImages = [...grid.querySelectorAll('.qr-code')];
+
+    Promise.all(
+        qrImages.map((image) => {
+            if (image.complete) return Promise.resolve();
+
+            return new Promise((resolve) => {
+                image.onload = resolve;
+                image.onerror = resolve;
+            });
+        })
+    ).then(() => window.print());
+}
+
+window.addEventListener('afterprint', () => {
+    if (!grid) return;
+
+    grid.querySelectorAll('.qr-code, .print-pin').forEach((element) => {
+        element.remove();
+    });
+});
+
+// Inicialización de la página
+renderPeople();
+renderVideos();
+
+const groupPhoto = document.querySelector('.photo-frame img');
+const photoPlaceholder = document.querySelector('.photo-placeholder');
+
+if (groupPhoto && photoPlaceholder) {
+    groupPhoto.addEventListener('load', () => {
+        photoPlaceholder.classList.add('is-hidden');
+    }, { once: true });
+
+    groupPhoto.addEventListener('error', () => {
+        groupPhoto.hidden = true;
+        photoPlaceholder.classList.remove('is-hidden');
+    });
+
+    if (groupPhoto.complete && groupPhoto.naturalWidth > 0) {
+        photoPlaceholder.classList.add('is-hidden');
+    }
+}
+
+window.addEventListener('hashchange', showTargetMessage);
+
+if (window.location.hash.startsWith('#mensaje-')) {
+    window.setTimeout(showTargetMessage, 300);
+}
+
+const printButton = document.querySelector('#printButton');
+
+if (printButton) {
+    printButton.addEventListener('click', printCards);
+}
+
+const musicButton = document.querySelector('#musicButton');
+const backgroundMusic = document.querySelector('#backgroundMusic');
+const musicLabel = document.querySelector('#musicLabel');
+
+function updateMusicButton(isPlaying) {
+    if (!musicButton || !musicLabel) return;
+
+    musicButton.classList.toggle('playing', isPlaying);
+    musicButton.setAttribute(
+        'aria-label',
+        isPlaying ? 'Pausar música' : 'Reproducir música'
+    );
+    musicLabel.textContent = isPlaying
+        ? 'Pausar música'
+        : 'Acompañar con música';
+}
+
+function resumeMusicAfterInteraction(event) {
+    if (event.target instanceof Element && event.target.closest('#musicButton')) {
+        return;
+    }
+
+    startBackgroundMusic();
+}
+
+async function startBackgroundMusic() {
+    if (!backgroundMusic) return;
+
+    try {
+        await backgroundMusic.play();
+        updateMusicButton(true);
+        document.removeEventListener('pointerdown', resumeMusicAfterInteraction);
+        document.removeEventListener('keydown', resumeMusicAfterInteraction);
+    } catch {
+        // El navegador puede bloquear el autoplay hasta que haya interacción.
+    }
+}
+
+if (musicButton) {
+    musicButton.addEventListener('click', async () => {
+        if (!backgroundMusic || !musicLabel) return;
+
+        if (backgroundMusic.paused) {
+            await startBackgroundMusic();
+
+            if (backgroundMusic.paused) {
+                showToast(
+                    'No se pudo reproducir. Revisa que assets/musica.mp3 exista y sea compatible.'
+                );
+            }
+        } else {
+            backgroundMusic.pause();
+            updateMusicButton(false);
+        }
+    });
+}
+
+if (backgroundMusic) {
+    // Intenta sonar al entrar; si el navegador bloquea autoplay, espera la primera interacción.
+    document.addEventListener('pointerdown', resumeMusicAfterInteraction);
+    document.addEventListener('keydown', resumeMusicAfterInteraction);
+    startBackgroundMusic();
+}
+
+// Animaciones de entrada
+if (
+    window.matchMedia('(prefers-reduced-motion: no-preference)').matches &&
+    'IntersectionObserver' in window
+) {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+
+            const animation = entry.target.animate(
+                [
+                    { opacity: 0, transform: 'translateY(18px)' },
+                    { opacity: 1, transform: 'translateY(0)' }
+                ],
+                {
+                    duration: 650,
+                    easing: 'cubic-bezier(.2,.7,.2,1)'
+                }
+            );
+
+            animation.onfinish = () => animation.cancel();
+            observer.unobserve(entry.target);
+        });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll(
+        '.intro-grid, .memory-strip, .section-heading, .group-photo-card, .video-card, .message-card, .final-section > *'
+    ).forEach((element) => {
+        observer.observe(element);
+    });
+}
